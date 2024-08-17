@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:26:17 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 21:16:18 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/17 22:16:31 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_philo	*initialise_philo(t_table *table, int id, char *argv[],
 	if (!philo)
 		return ((ft_putendl_fd("Error: Memory Allocation", 2),
 				free_table(table)), NULL);
-	pthread_create(&philo->thread, NULL, routine, NULL);
+	pthread_create(&philo->thread, NULL, routine, (void *)&philo);
 	philo->id = id;
 	philo->meals_eaten = 0;
 	philo->num_of_philos = ft_atoi(argv[1]);
@@ -55,8 +55,7 @@ t_philo	*initialise_philo(t_table *table, int id, char *argv[],
 	philo->time_to_eat = ft_atoi(argv[3]);
 	philo->time_to_sleep = ft_atoi(argv[4]);
 	philo->start_time = get_current_time();
-	philo->left_fork = 
-	philo->write_lock = &(table->write_lock);
+	philo->left_fork = philo->write_lock = &(table->write_lock);
 	philo->meal_lock = &(table->meal_lock);
 	return (philo);
 }
@@ -93,11 +92,11 @@ void	initialise_table(char *argv[], t_table **table, bool meals_number)
 
 int	main(int argc, char *argv[])
 {
-	int	i;
-	int	num_of_philos;
+	int				i;
+	int				num_of_philos;
 	bool			meals_number;
 	t_table			*table;
-	pthread_mutex_t *forks;
+	pthread_mutex_t	*forks;
 
 	if (argc < 5 || argc > 6)
 		return (ft_putendl_fd("Error: Invalid arguments.", 1), 0);
@@ -109,7 +108,7 @@ int	main(int argc, char *argv[])
 	initialise_table(argv, &table, meals_number);
 	i = 0;
 	num_of_philos = ft_atoi(argv[1]);
+	assign_forks(table->philos, forks, num_of_philos);
 	while (i < num_of_philos)
 		pthread_join(table->philos[i++]->thread, NULL);
-	
 }

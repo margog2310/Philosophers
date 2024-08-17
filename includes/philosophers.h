@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:56:03 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 21:12:08 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/17 22:15:28 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void				initialise_table(char *argv[], t_table **table,
 // routine
 int					ft_usleep(size_t milliseconds);
 size_t				get_current_time(void);
+void				assign_forks(t_philo *philos[], pthread_mutex_t *forks[],
+						int num_of_philos);
 int					thinking(t_philo *philo);
 int					sleeping(t_philo *philo);
 int					eating(t_philo *philo);
