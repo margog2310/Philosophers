@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:26:17 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 22:16:31 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/17 23:58:15 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ t_philo	*initialise_philo(t_table *table, int id, char *argv[],
 	philo->num_of_philos = ft_atoi(argv[1]);
 	if (meals_number)
 		philo->num_of_meals = ft_atoi(argv[5]);
+	else
+		philo->num_of_meals = -1;
 	philo->eating = false;
 	philo->dead = &(table->dead);
 	philo->last_meal = get_current_time();
@@ -55,8 +57,9 @@ t_philo	*initialise_philo(t_table *table, int id, char *argv[],
 	philo->time_to_eat = ft_atoi(argv[3]);
 	philo->time_to_sleep = ft_atoi(argv[4]);
 	philo->start_time = get_current_time();
-	philo->left_fork = philo->write_lock = &(table->write_lock);
+	philo->write_lock = &(table->write_lock);
 	philo->meal_lock = &(table->meal_lock);
+	philo->dead_lock = &(table->dead_lock);
 	return (philo);
 }
 
@@ -112,3 +115,17 @@ int	main(int argc, char *argv[])
 	while (i < num_of_philos)
 		pthread_join(table->philos[i++]->thread, NULL);
 }
+
+/*
+	TO DO:
+			1. finish philosopher's routine function (void ptr arg like the monitor function)
+			2. initialise monitor thread and hook on monitor function
+			3. finish main()
+				- better arg checking?
+				- separate init functions to keep main simple
+			4. clean up functions
+			5. finish Makefile
+			6. testing + memory leaks
+			7. clean up code + norminette
+			8. submit
+*/

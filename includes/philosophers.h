@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:56:03 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 22:15:28 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/17 23:52:18 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*write_lock;
 	pthread_mutex_t	*meal_lock;
+	pthread_mutex_t	*dead_lock;
 }					t_philo;
 
 typedef struct s_table
@@ -62,12 +63,19 @@ void				initialise_table(char *argv[], t_table **table,
 // routine
 int					ft_usleep(size_t milliseconds);
 size_t				get_current_time(void);
+void				print_message(char *msg, t_philo *philo);
 void				assign_forks(t_philo *philos[], pthread_mutex_t *forks[],
 						int num_of_philos);
 int					thinking(t_philo *philo);
 int					sleeping(t_philo *philo);
 int					eating(t_philo *philo);
 void				routine(t_philo *philo);
+// monitor
+void				print_message(char *msg, t_philo *philo);
+bool				philo_is_dead(t_philo *philo);
+bool				is_dead(t_table *table);
+bool				finished_eating(t_table *table);
+void				*monitor(void *ptr);
 // utils
 void				free_arr(char **arr);
 void				free_table(t_table *table);
