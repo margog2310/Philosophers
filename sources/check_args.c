@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:07:57 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 18:56:18 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:58:25 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	is_number(char **args)
 	int	i;
 	int	j;
 
-	j = 0;
+	j = 1;
 	while (args[j])
 	{
 		i = 0;
@@ -41,7 +41,7 @@ bool	is_positive(char **args, bool meals_number)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (i < 5)
 	{
 		if (ft_atoi(args[i]) <= 0)
@@ -50,7 +50,7 @@ bool	is_positive(char **args, bool meals_number)
 	}
 	if (meals_number)
 	{
-		if (ft_atoi(args[i] < 0))
+		if (ft_atoi(args[i]) < 0)
 			return (false);
 	}
 	return (true);
@@ -58,16 +58,9 @@ bool	is_positive(char **args, bool meals_number)
 
 bool	check_args(char **args, bool meals_number)
 {
-	int	i;
-
-	i = 1;
-	while (args[i])
-	{
-		if (!is_number(args[i]))
-			return (false);
-		if (!is_positive(args[i], meals_number))
-			return (false);
-		i++;
-	}
+	if (!is_number(args))
+		return (false);
+	if (!is_positive(args, meals_number))
+		return (false);
 	return (true);
 }

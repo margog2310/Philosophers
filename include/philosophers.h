@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:56:03 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 19:12:49 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/21 00:00:30 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <sys/time.h>
+# include <unistd.h>
 
 # define MAX 200
 
@@ -44,34 +46,38 @@ typedef struct s_philo
 typedef struct s_table
 {
 	bool			dead;
+	pthread_t		waiter_id;
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	write_lock;
-	t_philo			*philos[];
+	t_philo			**philos;
 }					t_table;
 
 // check args
+int					ft_isdigit(int c);
 bool				is_number(char **args);
 bool				is_positive(char **args, bool meals_number);
 bool				check_args(char **args, bool meals_number);
 // init
-void				initialise_forks(char *argv[], pthread_mutex_t **forks[]);
+void				init(char *argv[], t_table *table, int meals_number,
+						pthread_mutex_t **forks);
+void				initialise_forks(char *argv[], pthread_mutex_t ***forks);
 void				initialise_locks(t_table *table);
 t_philo				*initialise_philo(t_table *table, int id, char *argv[],
 						bool meals_number);
-void				initialise_table(char *argv[], t_table **table,
+void				initialise_table(char *argv[], t_table *table,
 						bool meals_number);
-void				initialise_waiter(t_table *table);
 // routine
 int					ft_usleep(size_t milliseconds);
 size_t				get_current_time(void);
 void				print_message(char *msg, t_philo *philo);
-void				assign_forks(t_philo *philos[], pthread_mutex_t *forks[],
+void				assign_forks(t_philo *philos[], pthread_mutex_t **forks,
 						int num_of_philos);
+int					is_dead_loop(t_philo *philo);
 int					thinking(t_philo *philo);
 int					sleeping(t_philo *philo);
 int					eating(t_philo *philo);
-void				routine(void *ptr);
+void				*routine(void *ptr);
 // monitor
 void				print_message(char *msg, t_philo *philo);
 bool				philo_is_dead(t_philo *philo);
@@ -81,8 +87,8 @@ void				*monitor(void *ptr);
 // utils
 void				free_table(t_table *table);
 void				free_philos(t_philo *philos[]);
-void				destroy_forks(pthread_mutex_t *forks[]);
-void				free_all(t_table *table, pthread_mutex_t *forks[]);
+void				destroy_forks(pthread_mutex_t **forks);
+void				free_all(t_table *table, pthread_mutex_t **forks);
 long long			ft_atoi(const char *str);
 int					ft_usleep(size_t milliseconds);
 void				ft_putendl_fd(char *s, int fd);

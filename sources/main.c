@@ -6,18 +6,30 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:26:17 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 19:08:59 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 23:59:07 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	init(char *argv[], t_table *table, int meals_number, pthread_mutex_t *forks)
+void	init(char *argv[], t_table *table, int meals_number,
+		pthread_mutex_t **forks)
 {
-	initialise_forks(argv, forks);
-	initialise_table(argv, &table, meals_number);
-	initialise_waiter(table);
+	int	i;
+	int	num_of_philos;
+
+	initialise_forks(argv, &forks);
+	initialise_table(argv, table, meals_number);
 	assign_forks(table->philos, forks, ft_atoi(argv[1]));
+	i = 0;
+	num_of_philos = ft_atoi(argv[1]);
+	pthread_create(&table->waiter_id, NULL, &monitor, (void *)table);
+	while (i < num_of_philos)
+	{
+		pthread_create(&table->philos[i]->thread, NULL, &routine,
+			(void *)table->philos[i]);
+		i++;
+	}
 }
 
 int	main(int argc, char *argv[])
@@ -25,23 +37,25 @@ int	main(int argc, char *argv[])
 	int				i;
 	int				num_of_philos;
 	bool			meals_number;
-	t_table			*table;
-	pthread_mutex_t	*forks;
+	t_table			table;
+	pthread_mutex_t	**forks;
 
 	if (argc < 5 || argc > 6)
-		return (ft_putendl_fd("Error: Invalid arguments.", -1), 0);
+		return (ft_putendl_fd("Error: Invalid arguments.", 1), -1);
 	if (argc == 5)
 		meals_number = false;
-	else if (argc == 6)
+	if (argc == 6)
 		meals_number = true;
 	if (!check_args(argv, meals_number))
-		return (ft_putendl_fd("Error: Invalid arguments.", -1), 0), 
+		return (ft_putendl_fd("Error: Invalid arguments.", 1), -1);
+	forks = NULL;
+	init(argv, &table, meals_number, forks);
 	i = 0;
 	num_of_philos = ft_atoi(argv[1]);
-	init(argv, table, meals_number, forks);
+	pthread_join(table.waiter_id, NULL);
 	while (i < num_of_philos)
-		pthread_join(table->philos[i++]->thread, NULL);
-	free_all(table, forks);
+		pthread_join(table.philos[i++]->thread, NULL);
+	free_all(&table, forks);
 	return (0);
 }
 

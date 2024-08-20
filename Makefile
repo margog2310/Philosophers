@@ -6,7 +6,7 @@
 #    By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/17 17:56:31 by mganchev          #+#    #+#              #
-#    Updated: 2024/08/20 19:16:00 by mganchev         ###   ########.fr        #
+#    Updated: 2024/08/20 19:56:48 by mganchev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -I$(INCLUDE) -c $< -o $@
 	
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -lft -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJDIR)

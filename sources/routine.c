@@ -6,13 +6,13 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:44:18 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 18:47:35 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 23:43:16 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	assign_forks(t_philo *philos[], pthread_mutex_t *forks[],
+void	assign_forks(t_philo *philos[], pthread_mutex_t **forks,
 		int num_of_philos)
 {
 	int	i;
@@ -21,9 +21,10 @@ void	assign_forks(t_philo *philos[], pthread_mutex_t *forks[],
 	while (i < num_of_philos)
 	{
 		philos[i]->left_fork = forks[philos[i]->id - 1];
-		philos[i]->right_fork = forks[philos[i]->id];
-		if (i == num_of_philos - 1)
+		if (i == 0)
 			philos[i]->right_fork = forks[num_of_philos - 1];
+		else
+			philos[i]->right_fork = forks[philos[i]->id];
 		i++;
 	}
 }
@@ -37,7 +38,7 @@ int	thinking(t_philo *philo)
 int	sleeping(t_philo *philo)
 {
 	print_message("is sleeping.\n", philo);
-	ft_usleep(philo->time_to_sleep * 1000);
+	ft_usleep(philo->time_to_sleep);
 	return (0);
 }
 
@@ -52,10 +53,14 @@ int	eating(t_philo *philo)
 		return (-1);
 	}
 	print_message("has taken a fork.\n", philo);
+	philo->eating = true;
 	print_message("is eating.\n", philo);
+	pthread_mutex_lock(philo->meal_lock);
 	philo->last_meal = get_current_time();
 	philo->meals_eaten++;
-	ft_usleep(philo->time_to_eat * 1000);
+	pthread_mutex_unlock(philo->meal_lock);
+	ft_usleep(philo->time_to_eat);
+	philo->eating = false;
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	return (0);
@@ -63,22 +68,16 @@ int	eating(t_philo *philo)
 
 void	*routine(void *ptr)
 {
-	int		i;
-	t_table	*table;
+	t_philo	*philo;
 
-	i = 0;
-	table = (t_table *)ptr;
-	while (1)
+	philo = (t_philo *)ptr;
+	if (philo->id % 2 == 0)
+		ft_usleep(1);
+	while (!is_dead_loop(philo))
 	{
-		while (table->philos[i])
-		{
-			thinking(table->philos[i]);
-			eating(table->philos[i]);
-			sleeping(table->philos[i]);
-			i++;
-		}
-		if (table->dead)
-			break ;
+		eating(philo);
+		sleeping(philo);
+		thinking(philo);
 	}
 	return (ptr);
 }

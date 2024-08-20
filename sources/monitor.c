@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 22:54:22 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 19:10:33 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:46:26 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	philo_is_dead(t_philo *philo)
 	pthread_mutex_lock(philo->meal_lock);
 	if (time - philo->last_meal >= philo->time_to_die && philo->eating == false)
 		return (pthread_mutex_unlock(philo->meal_lock), true);
-	pthread_mutex_unlock(&philo->meal_lock);
+	pthread_mutex_unlock(philo->meal_lock);
 	return (false);
 }
 
