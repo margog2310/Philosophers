@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:44:18 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 23:24:08 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:47:35 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,24 @@ int	eating(t_philo *philo)
 	return (0);
 }
 
-void	routine(t_philo *philo)
+void	*routine(void *ptr)
 {
-	while (!philo->dead)
+	int		i;
+	t_table	*table;
+
+	i = 0;
+	table = (t_table *)ptr;
+	while (1)
 	{
-		thinking(philo);
-		eating(philo);
-		sleeping(philo);
+		while (table->philos[i])
+		{
+			thinking(table->philos[i]);
+			eating(table->philos[i]);
+			sleeping(table->philos[i]);
+			i++;
+		}
+		if (table->dead)
+			break ;
 	}
+	return (ptr);
 }

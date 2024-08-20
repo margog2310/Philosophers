@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:56:03 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 23:52:18 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:12:49 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_table
 // check args
 bool				is_number(char **args);
 bool				is_positive(char **args, bool meals_number);
+bool				check_args(char **args, bool meals_number);
 // init
 void				initialise_forks(char *argv[], pthread_mutex_t **forks[]);
 void				initialise_locks(t_table *table);
@@ -60,6 +61,7 @@ t_philo				*initialise_philo(t_table *table, int id, char *argv[],
 						bool meals_number);
 void				initialise_table(char *argv[], t_table **table,
 						bool meals_number);
+void				initialise_waiter(t_table *table);
 // routine
 int					ft_usleep(size_t milliseconds);
 size_t				get_current_time(void);
@@ -69,7 +71,7 @@ void				assign_forks(t_philo *philos[], pthread_mutex_t *forks[],
 int					thinking(t_philo *philo);
 int					sleeping(t_philo *philo);
 int					eating(t_philo *philo);
-void				routine(t_philo *philo);
+void				routine(void *ptr);
 // monitor
 void				print_message(char *msg, t_philo *philo);
 bool				philo_is_dead(t_philo *philo);
@@ -77,11 +79,12 @@ bool				is_dead(t_table *table);
 bool				finished_eating(t_table *table);
 void				*monitor(void *ptr);
 // utils
-void				free_arr(char **arr);
 void				free_table(t_table *table);
+void				free_philos(t_philo *philos[]);
+void				destroy_forks(pthread_mutex_t *forks[]);
+void				free_all(t_table *table, pthread_mutex_t *forks[]);
 long long			ft_atoi(const char *str);
 int					ft_usleep(size_t milliseconds);
 void				ft_putendl_fd(char *s, int fd);
-void				*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:05:54 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 19:46:38 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:12:40 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,6 @@ void	ft_putendl_fd(char *s, int fd)
 		i++;
 	write(fd, s, i);
 	write(fd, "\n", 1);
-}
-
-void	free_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	while (i--)
-		free(arr[i]);
-	free(arr);
 }
 
 long long	ft_atoi(const char *str)
@@ -56,28 +44,4 @@ long long	ft_atoi(const char *str)
 		str++;
 	}
 	return (nb * sign);
-}
-
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
-{
-	void	*new_ptr;
-
-	if (!ptr)
-	{
-		new_ptr = malloc(new_size);
-		if (!new_ptr)
-			return (NULL);
-		return (new_ptr);
-	}
-	if (!new_size)
-		return (free(ptr), NULL);
-	new_ptr = malloc(new_size);
-	if (!new_ptr)
-		return (free(ptr), NULL);
-	if (old_size < new_size)
-		ft_memcpy(new_ptr, ptr, old_size);
-	else
-		ft_memcpy(new_ptr, ptr, new_size);
-	free(ptr);
-	return (new_ptr);
 }

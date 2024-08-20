@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:07:57 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 18:16:26 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 18:56:18 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,22 @@ bool	is_positive(char **args, bool meals_number)
 	{
 		if (ft_atoi(args[i] < 0))
 			return (false);
+	}
+	return (true);
+}
+
+bool	check_args(char **args, bool meals_number)
+{
+	int	i;
+
+	i = 1;
+	while (args[i])
+	{
+		if (!is_number(args[i]))
+			return (false);
+		if (!is_positive(args[i], meals_number))
+			return (false);
+		i++;
 	}
 	return (true);
 }

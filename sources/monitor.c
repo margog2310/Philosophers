@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 22:54:22 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/17 23:51:39 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/20 19:10:33 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ bool	is_dead(t_table *table)
 	}
 	return (false);
 }
+
 bool	finished_eating(t_table *table)
 {
 	int	i;
