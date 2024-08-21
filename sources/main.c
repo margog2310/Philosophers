@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:26:17 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 23:59:07 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/21 22:54:36 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ void	init(char *argv[], t_table *table, int meals_number,
 			(void *)table->philos[i]);
 		i++;
 	}
+	i = 0;
+	pthread_join(table->waiter_id, NULL);
+	while (i < num_of_philos)
+		pthread_join(table->philos[i++]->thread, NULL);
 }
+
 
 int	main(int argc, char *argv[])
 {
-	int				i;
-	int				num_of_philos;
 	bool			meals_number;
 	t_table			table;
 	pthread_mutex_t	**forks;
@@ -50,11 +53,6 @@ int	main(int argc, char *argv[])
 		return (ft_putendl_fd("Error: Invalid arguments.", 1), -1);
 	forks = NULL;
 	init(argv, &table, meals_number, forks);
-	i = 0;
-	num_of_philos = ft_atoi(argv[1]);
-	pthread_join(table.waiter_id, NULL);
-	while (i < num_of_philos)
-		pthread_join(table.philos[i++]->thread, NULL);
 	free_all(&table, forks);
 	return (0);
 }

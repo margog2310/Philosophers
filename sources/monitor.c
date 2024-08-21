@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 22:54:22 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 19:46:26 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:38:11 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,16 @@ void	print_message(char *msg, t_philo *philo)
 
 	pthread_mutex_lock(philo->write_lock);
 	time = get_current_time() - philo->start_time;
-	printf("%zu %d %s\n", time, philo->id, msg);
+	if (!is_dead_loop(philo))
+		printf("%zu %d %s\n", time, philo->id, msg);
 	pthread_mutex_unlock(philo->write_lock);
 }
 
 bool	philo_is_dead(t_philo *philo)
 {
-	int	time;
-
-	time = get_current_time();
 	pthread_mutex_lock(philo->meal_lock);
-	if (time - philo->last_meal >= philo->time_to_die && philo->eating == false)
+	if ((get_current_time() - philo->last_meal > philo->time_to_die)
+		&& philo->eating == false)
 		return (pthread_mutex_unlock(philo->meal_lock), true);
 	pthread_mutex_unlock(philo->meal_lock);
 	return (false);
@@ -36,8 +35,9 @@ bool	philo_is_dead(t_philo *philo)
 
 bool	is_dead(t_table *table)
 {
-	int	i;
-	int	num_of_philos;
+	int		i;
+	int		num_of_philos;
+	size_t	time;
 
 	i = 0;
 	num_of_philos = table->philos[0]->num_of_philos;
@@ -45,10 +45,14 @@ bool	is_dead(t_table *table)
 	{
 		if (philo_is_dead(table->philos[i]))
 		{
-			print_message("died.", table->philos[i]);
+			pthread_mutex_lock(&table->write_lock);
+			time = get_current_time() - table->philos[i]->start_time;
+			printf("%zu %d died.\n", time, table->philos[i]->id);
 			pthread_mutex_lock(&table->dead_lock);
 			table->dead = true;
 			pthread_mutex_unlock(&table->dead_lock);
+			pthread_mutex_unlock(&table->write_lock);
+			// print_message("died.", table->philos[i]);
 			return (true);
 		}
 		i++;
@@ -90,9 +94,11 @@ void	*monitor(void *ptr)
 	t_table	*table;
 
 	table = (t_table *)ptr;
+	// pthread_mutex_lock(&table->launch_lock);
 	while (1)
 	{
 		if (is_dead(table) || finished_eating(table))
+			// pthread_mutex_unlock(&table->write_lock);
 			break ;
 	}
 	return (ptr);

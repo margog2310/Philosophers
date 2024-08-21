@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 18:05:04 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/21 00:00:01 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:41:47 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,12 @@ t_philo	*initialise_philo(t_table *table, int id, char *argv[],
 	else
 		philo->num_of_meals = -1;
 	philo->dead = &(table->dead);
-	philo->last_meal = get_current_time();
+	philo->eating = false;
 	philo->time_to_die = ft_atoi(argv[2]);
 	philo->time_to_eat = ft_atoi(argv[3]);
 	philo->time_to_sleep = ft_atoi(argv[4]);
 	philo->start_time = get_current_time();
+	philo->last_meal = get_current_time();
 	philo->write_lock = &(table->write_lock);
 	philo->meal_lock = &(table->meal_lock);
 	philo->dead_lock = &(table->dead_lock);
@@ -79,7 +80,9 @@ void	initialise_table(char *argv[], t_table *table, bool meals_number)
 		return (ft_putendl_fd("Error: Memory allocation", 2),
 			free_table(table), (void)0);
 	initialise_locks(table);
+	pthread_mutex_lock(&table->dead_lock);
 	table->dead = false;
+	pthread_mutex_unlock(&table->dead_lock);
 	i = 0;
 	while (i < num_of_philos)
 	{

@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:56:03 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/21 00:00:30 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/21 21:47:30 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_philo
 typedef struct s_table
 {
 	bool			dead;
+
 	pthread_t		waiter_id;
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;

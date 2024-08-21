@@ -6,7 +6,7 @@
 #    By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/17 17:56:31 by mganchev          #+#    #+#              #
-#    Updated: 2024/08/20 19:56:48 by mganchev         ###   ########.fr        #
+#    Updated: 2024/08/21 23:02:15 by mganchev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = philo
 INCLUDE = ./include
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3
+CFLAGS = -Wall -Werror -Wextra -g3 -pthread
 
 SRCDIR =./sources
 OBJDIR =./build
@@ -49,5 +49,3 @@ leaks: all
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 re: fclean all
-
-leaks: all

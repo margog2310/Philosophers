@@ -6,12 +6,9 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:07:57 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 19:58:25 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/21 22:02:05 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// all args should be > 0 EXCEPT number of meals each philo should eat (edge case)
-// in eval form it says to not test with more than 200 philos so limit of 200 can be set
 
 #include "philosophers.h"
 

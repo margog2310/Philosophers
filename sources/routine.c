@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:44:18 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/20 23:43:16 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/21 23:59:19 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	assign_forks(t_philo *philos[], pthread_mutex_t **forks,
 	while (i < num_of_philos)
 	{
 		philos[i]->left_fork = forks[philos[i]->id - 1];
-		if (i == 0)
-			philos[i]->right_fork = forks[num_of_philos - 1];
+		if (i == num_of_philos - 1)
+			philos[i]->right_fork = forks[0];
 		else
 			philos[i]->right_fork = forks[philos[i]->id];
 		i++;
@@ -44,23 +44,26 @@ int	sleeping(t_philo *philo)
 
 int	eating(t_philo *philo)
 {
-	if (pthread_mutex_lock(philo->right_fork) != 0)
-		return (-1);
+	pthread_mutex_lock(philo->right_fork);
 	print_message("has taken a fork.\n", philo);
-	if (pthread_mutex_lock(philo->left_fork) != 0)
+	if (philo->num_of_philos == 1)
 	{
+		ft_usleep(philo->time_to_die);
 		pthread_mutex_unlock(philo->right_fork);
-		return (-1);
+		return (0);
 	}
+	pthread_mutex_lock(philo->left_fork);
 	print_message("has taken a fork.\n", philo);
-	philo->eating = true;
-	print_message("is eating.\n", philo);
 	pthread_mutex_lock(philo->meal_lock);
+	philo->eating = true;
 	philo->last_meal = get_current_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(philo->meal_lock);
+	print_message("is eating.\n", philo);
 	ft_usleep(philo->time_to_eat);
+	pthread_mutex_lock(philo->meal_lock);
 	philo->eating = false;
+	pthread_mutex_unlock(philo->meal_lock);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	return (0);
@@ -75,9 +78,9 @@ void	*routine(void *ptr)
 		ft_usleep(1);
 	while (!is_dead_loop(philo))
 	{
+		thinking(philo);
 		eating(philo);
 		sleeping(philo);
-		thinking(philo);
 	}
 	return (ptr);
 }
