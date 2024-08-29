@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:44:18 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/21 23:59:19 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:41:43 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	assign_forks(t_philo *philos[], pthread_mutex_t **forks,
 	i = 0;
 	while (i < num_of_philos)
 	{
-		philos[i]->left_fork = forks[philos[i]->id - 1];
+		philos[i]->left_fork = forks[philos[i]->id - 1];\
 		if (i == num_of_philos - 1)
 			philos[i]->right_fork = forks[0];
 		else
@@ -52,7 +52,8 @@ int	eating(t_philo *philo)
 		pthread_mutex_unlock(philo->right_fork);
 		return (0);
 	}
-	pthread_mutex_lock(philo->left_fork);
+	if (pthread_mutex_lock(philo->left_fork) != 0)
+		return (pthread_mutex_unlock(philo->right_fork), 0);
 	print_message("has taken a fork.\n", philo);
 	pthread_mutex_lock(philo->meal_lock);
 	philo->eating = true;

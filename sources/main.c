@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 20:26:17 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/21 22:54:36 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:34:02 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	init(char *argv[], t_table *table, int meals_number,
 		pthread_join(table->philos[i++]->thread, NULL);
 }
 
-
 int	main(int argc, char *argv[])
 {
 	bool			meals_number;
@@ -59,7 +58,8 @@ int	main(int argc, char *argv[])
 
 /*
 	TO DO:
-			//1. finish philosopher's routine function (void ptr arg like the monitor function)
+			//1. finish philosopher's routine function 
+			  //(void ptr arg like the monitor function)
 			//2. initialise monitor thread and hook on monitor function
 			//3. finish main()
 			//	- better arg checking?

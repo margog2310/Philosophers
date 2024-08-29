@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 22:54:22 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/21 23:38:11 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/29 19:34:41 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	print_message(char *msg, t_philo *philo)
 bool	philo_is_dead(t_philo *philo)
 {
 	pthread_mutex_lock(philo->meal_lock);
-	if ((get_current_time() - philo->last_meal > philo->time_to_die)
-		&& philo->eating == false)
+	if (!philo->eating && (get_current_time()
+			- philo->last_meal > philo->time_to_die))
 		return (pthread_mutex_unlock(philo->meal_lock), true);
 	pthread_mutex_unlock(philo->meal_lock);
 	return (false);
@@ -52,7 +52,6 @@ bool	is_dead(t_table *table)
 			table->dead = true;
 			pthread_mutex_unlock(&table->dead_lock);
 			pthread_mutex_unlock(&table->write_lock);
-			// print_message("died.", table->philos[i]);
 			return (true);
 		}
 		i++;
@@ -94,11 +93,9 @@ void	*monitor(void *ptr)
 	t_table	*table;
 
 	table = (t_table *)ptr;
-	// pthread_mutex_lock(&table->launch_lock);
 	while (1)
 	{
 		if (is_dead(table) || finished_eating(table))
-			// pthread_mutex_unlock(&table->write_lock);
 			break ;
 	}
 	return (ptr);

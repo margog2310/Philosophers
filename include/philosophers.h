@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:56:03 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/21 21:47:30 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:10:40 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILOSOPHERS_H
 
 # include <pthread.h>
+# include <semaphore.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -21,7 +22,6 @@
 # include <unistd.h>
 
 # define MAX 200
-
 typedef struct s_philo
 {
 	pthread_t		thread;
@@ -53,6 +53,11 @@ typedef struct s_table
 	pthread_mutex_t	write_lock;
 	t_philo			**philos;
 }					t_table;
+
+// bonus
+typedef struct s_sem
+{
+}					t_sem;
 
 // check args
 int					ft_isdigit(int c);
