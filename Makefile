@@ -6,7 +6,7 @@
 #    By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/17 17:56:31 by mganchev          #+#    #+#              #
-#    Updated: 2024/08/29 23:11:04 by mganchev         ###   ########.fr        #
+#    Updated: 2024/11/21 19:43:21 by mganchev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,19 +16,17 @@ BONUS_NAME = philo_bonus
 INCLUDE = ./include
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3 -lpthread -lrt
+CFLAGS = -Wall -Werror -Wextra -g3 
+LDFLAGS = -lpthread -lrt
 
 SRCDIR =./sources
-BONUS_SRCDIR =./bonus
 OBJDIR =./build
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/check_args.c $(SRCDIR)/init.c $(SRCDIR)/monitor.c \
 $(SRCDIR)/routine.c $(SRCDIR)/time.c $(SRCDIR)/free.c $(SRCDIR)/utils.c
-BONUS_SRCS = 
 
 OBJS = $(OBJDIR)/main.o $(OBJDIR)/check_args.o $(OBJDIR)/init.o $(OBJDIR)/monitor.o \
 $(OBJDIR)/routine.o $(OBJDIR)/time.o $(OBJDIR)/free.o $(OBJDIR)/utils.o
-BONUS_OBJS = 
 
 all: $(OBJDIR) $(NAME)
 

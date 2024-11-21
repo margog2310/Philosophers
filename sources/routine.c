@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 18:44:18 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/29 19:41:43 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:42:11 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	assign_forks(t_philo *philos[], pthread_mutex_t **forks,
 	i = 0;
 	while (i < num_of_philos)
 	{
-		philos[i]->left_fork = forks[philos[i]->id - 1];\
+		philos[i]->left_fork = forks[philos[i]->id - 1];
 		if (i == num_of_philos - 1)
 			philos[i]->right_fork = forks[0];
 		else

@@ -6,7 +6,7 @@
 /*   By: mganchev <mganchev@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 17:56:03 by mganchev          #+#    #+#             */
-/*   Updated: 2024/08/29 23:10:40 by mganchev         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:43:42 by mganchev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 
 # define MAX 200
+
 typedef struct s_philo
 {
 	pthread_t		thread;
